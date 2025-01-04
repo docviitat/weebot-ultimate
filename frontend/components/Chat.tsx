@@ -2,6 +2,19 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MessageCircle, X, Send, Trophy, Tag } from 'lucide-react';
 
+interface Recomendaciones {
+  id: number;
+  name: string;
+  category: string;
+  price: string;
+}
+
+interface Mensajes {
+  rol: string;
+  contenido: string;
+  fecha: string;
+}
+
 const ChatbotFiguras = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
   const [mensajes, setMensajes] = useState([]);
@@ -10,9 +23,6 @@ const ChatbotFiguras = () => {
   const [idUsuario] = useState(() => Math.floor(Math.random() * 10) + 1);
   const [recomendaciones, setRecomendaciones] = useState([]);
   const finMensajesRef = useRef(null);
-
-
-
 
   // Mensaje de bienvenida cuando se abre el chat
   useEffect(() => {
@@ -72,8 +82,9 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
       const datos = await respuesta.json();
 
       if (datos.status === 'success') {
-        setRecomendaciones(datos.recommendations || []);
+        setRecomendaciones(datos.recommendations.slice(0,2) || []);
         
+        console.log(datos)
         const mensajeBot = {
           contenido: datos.content,
           rol: 'asistente',
@@ -85,7 +96,7 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
       }
     } catch (error) {
       const mensajeError = {
-        contenido: 'Lo siento, tuve problemas procesando tu mensaje. ¿Podrías intentarlo de nuevo?',
+        contenido: `Lo siento, tuve problemas procesando tu mensaje. ERROR: ${error} ¿Podrías intentarlo de nuevo?`,
         rol: 'error',
         fecha: new Date().toISOString()
       };
@@ -95,7 +106,7 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
     }
   };
 
-  const formatearHora = (fecha) => {
+  const formatearHora = (fecha: string) => {
     return new Date(fecha).toLocaleTimeString('es-ES', {
       hour: '2-digit',
       minute: '2-digit'
@@ -131,7 +142,7 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
 
         {/* Área de Mensajes */}
     <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50">
-          {mensajes.map((mensaje, index) => (
+          {mensajes.map((mensaje: Mensajes, index) => (
             <div
               key={index}
               className={`flex ${mensaje.rol === 'usuario' ? 'justify-end' : 'justify-start'}`}
@@ -173,7 +184,7 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
               <h3 className="text-sm font-semibold text-purple-900">Recomendados</h3>
             </div>
             <div className="space-y-2">
-              {recomendaciones.map((rec) => (
+              {recomendaciones.map((rec: Recomendaciones) => (
                 <div key={rec.id} className="flex justify-between items-center bg-white p-2 rounded-lg shadow-sm">
                   <div className="flex flex-col">
                     <span className="text-sm font-medium">{rec.name}</span>

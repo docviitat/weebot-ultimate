@@ -1,20 +1,20 @@
-# Use Node.js image
+# Node.js imagen
 FROM node:19
 
-# Set working directory in the container
+# Directorio de trabajo
 WORKDIR /app
 
-# Copy package.json and lock file
+# Copiar
 COPY package*.json ./
 
-# Install dependencies
+# Instalar dependencias
 RUN npm install
 
-# Copy all files
+# Copy de nuevoo
 COPY . .
 
-# Expose the port for Vite (or Next.js default port 3000)
+# Exponer puerto
 EXPOSE 3000
 
-# Run the application
+# Correr la app
 CMD ["npm", "run", "dev"]
