@@ -7,7 +7,6 @@ import ollama
 app = Flask(__name__)
 CORS(app)
 
-# Product data
 products = {
     101: {
         'id': '101',
@@ -67,7 +66,6 @@ products = {
     }
 }
 
-# Training data generation
 data = {
     'user_id': [1, 2, 3, 4, 5] * 2,
     'product_id': [101, 102, 103, 104, 105] * 2,
@@ -76,28 +74,25 @@ data = {
 }
 df = pd.DataFrame(data)
 
-# Train model
 X = df[['user_id', 'product_id', 'view_count']]
 y = df['purchase_count']
 model = RandomForestClassifier(n_estimators=100, random_state=42)
 model.fit(X, y)
 
 def generate_context_and_prompt(recommendations, message, mode="default"):
-    # Determinar el número de recomendaciones y el contexto según el modo
     if mode == "catalog":
-        top_recommendations = recommendations # Ajusta según tu necesidad
+        top_recommendations = recommendations 
         context = "Basado en el mensaje del usuario, estas figuras se encuentran en el catálogo disponible:\n"
         prompt = f"""Context: {context}
         User message: {message}
         Comparte el catálogo con el formato dado."""
     else:
-        top_recommendations = recommendations[:2]  # Recomendaciones por defecto
+        top_recommendations = recommendations[:2]  
         context = "Basado en los intereses del usuario, estas figuras son recomendadas:\n"
         prompt = f"""Context: {context}
         User message: {message}
         Responde eficazmente sobre las figuras, incorporando las recomendaciones naturalmente."""
     
-    # Agregar detalles de productos reales al contexto
     for rec in top_recommendations:
         context += f"- id({rec['id']}), {rec['name']} (${rec['price']}) - {rec['category']}\n"
 
@@ -109,7 +104,6 @@ def chat():
     user_id = data.get('userId', 1)
     message = data.get('message', '').lower()
 
-    # Get recommendations for user
     recommendations = []
     for product_id in products.keys():
         pred_data = pd.DataFrame({
@@ -126,15 +120,12 @@ def chat():
     
     recommendations.sort(key=lambda x: x['probability'], reverse=True)
 
-    # Check if any product is mentioned in the message
     mentioned_products = []
     for product in products.values():
-        # Convert product name to lower case for comparison
         if any(word.lower() in message for word in product['name'].split()):
             product_info = product.copy()
             mentioned_products.append(product_info)
 
-    # Determine mode and context based on message content
     if "catalogo" in message:
         mode = "catalog"
     elif mentioned_products:
@@ -142,7 +133,6 @@ def chat():
     else:
         mode = "default"
 
-    # Generate appropriate context and prompt
     if mode == "product_info":
         top_recommendations, context, prompt = generate_context_and_prompt(recommendations, message, mode)
         context = "El usuario ha mencionado productos específicos. Información detallada:\n"
@@ -154,7 +144,6 @@ def chat():
     else:
         top_recommendations, context, prompt = generate_context_and_prompt(recommendations, message, mode)
 
-    # Enhanced system prompt
     system_prompt = """Eres un asistente de compras de figuras de anime, manga y videojuegos coleccionables.
     IMPORTANTE: 
     - Debes usar ÚNICAMENTE los productos proporcionados en el contexto. NO inventes ni agregues productos adicionales.

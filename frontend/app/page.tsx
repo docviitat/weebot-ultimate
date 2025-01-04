@@ -3,7 +3,7 @@ import Chat from "@/components/Chat";
 import React, { useState } from 'react';
 import { Search } from 'lucide-react';
 import Link from 'next/link';
-import { figures } from './data/figures';
+import { figures } from '@/app/data/figures';
 
 export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
