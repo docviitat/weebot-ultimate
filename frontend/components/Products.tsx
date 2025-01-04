@@ -86,8 +86,6 @@ const figures = [
   }
 ];
 
-
-
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFigure, setSelectedFigure] = useState(null);

@@ -13,7 +13,9 @@ interface Mensajes {
   rol: string;
   contenido: string;
   fecha: string;
+  url?: string; 
 }
+
 
 const ChatbotFiguras = () => {
   const [estaAbierto, setEstaAbierto] = useState(false);
@@ -38,7 +40,10 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
 🏭 Diferentes fabricantes y sus especialidades
 🎌 Figuras de anime, manga o videojuegos específicos
 
-¿Qué tipo de figuras te interesan?`,
+¿Qué tipo de figuras te interesan?
+
+Ingresa cualquier texto para ver las recomendaciones y si ingresas la palabra "catálogo"
+podrás ver algunas de nuestras figuras disponibles en orden de popularidad. 👩‍❤️‍👩`,
         rol: 'asistente',
         fecha: new Date().toISOString()
       }]);
@@ -82,14 +87,25 @@ Puedo ayudarte a encontrar la figura perfecta para tu colección. Pregúntame so
       const datos = await respuesta.json();
 
       if (datos.status === 'success') {
-        setRecomendaciones(datos.recommendations.slice(0,2) || []);
+        
+        setRecomendaciones(datos.recommendations.slice(0, 2) || []);
         
         console.log(datos)
+
         const mensajeBot = {
           contenido: datos.content,
           rol: 'asistente',
-          fecha: new Date().toISOString()
+          fecha: new Date().toISOString(),
+          url: ''
         };
+
+        if (datos.mentioned_products && datos.mentioned_products.length > 0) {
+          const product = datos.mentioned_products[0];
+          const productUrl = `/figura/${product.id}`;
+          mensajeBot.contenido += `\n\n🔍 Puedes ver más detalles de la figura aquí: ${window.location.origin}${productUrl}`;
+          mensajeBot.url = productUrl;
+        }
+
         setMensajes(prev => [...prev, mensajeBot]);
       } else {
         throw new Error(datos.error);
