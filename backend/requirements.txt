@@ -10,5 +10,4 @@ scikit-learn==1.6.0
 numpy==2.2.1
 typing==3.7.4.3
 uuid05==0.0.4
-# USE THE ONE ABOVE INSTEADDDDDDDDDDDDDDDDDDD
 uuid==1.30

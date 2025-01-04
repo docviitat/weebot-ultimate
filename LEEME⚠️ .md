@@ -9,6 +9,8 @@ PRECAUCIONES LOL:
 ## Para correr la aplicación
 
 1. Clonar este repositorio.
+Clonar este repositorio.
+
 
 2. Instalar [Docker](https://www.docker.com/products/docker-desktop) y [Docker Compose](https://docs.docker.com/compose/) en tu PC.
 
