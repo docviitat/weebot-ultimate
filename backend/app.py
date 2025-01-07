@@ -48,7 +48,7 @@ products = {
         'name': 'Nendoroid Rem',
         'price': 359.99,
         'category': 'anime',
-        'image': 'https://i.pinimg.com/736x/95/5b/6d/955b6deeba417df921a8fdbb3aa52fb3.jpg'
+        'image': 'https://i.pinimg.com/736x/95/5b/6d/955b6dee>ba417df921a8fdbb3aa52fb3.jpg'
     },
     107: {
         'id': '107',

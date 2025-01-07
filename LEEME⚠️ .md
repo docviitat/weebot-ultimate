@@ -23,3 +23,4 @@ Clonar este repositorio.
 
 5. La aplicación debería de funcionar en ese punto. 👌
 
+🚨🚨🚨🚨🚨 AL CORRER LA OTRA APLICACIÓN RECUERDA ELIMINAR TODOS LOS CONTENEDORES PORQUE TODOS ESTAN CORRIENDO EN LOS MISMOS PUERTOS.
